@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sparwahnsinn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-color: #E1D9C7;
+            --text-color: #1f2937;
+            --card-bg: #FFF7E6;
+            --border-color: #e5e7eb;
+            --nav-bg: #E1D9C7;
+            --nav-text: #0d1015;
+            --footer-bg: #FFF7E6;
+            --footer-text: #000000;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --footer-bottom: #000000;
+            --p-text: #000000;
+        }
+
+        .dark-mode {
+            --primary-color: #0ea5e9;
+            --primary-hover: #38bdf8;
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --nav-bg: #0f172a;
+            --nav-text: #f8fafc;
+            --footer-bg: #0f172a;
+            --footer-text: #cbd5e1;
+            --footer-bottom: #f8fafc;
+            --p-text: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        .page-center {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .wrap {
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            padding: clamp(16px, 4vw, 24px);
+        }
+
+        /* ========== DESKTOP NAVIGATION ========== */
+        .desktop-nav {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            background: var(--nav-bg);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            animation: slideDown 0.5s ease-out;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: block;
+        }
+
+        .desktop-nav .nav-wrapper {
+            position: relative;
+            max-width: 1200px;
+            padding: 0 30px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .desktop-nav .logo a {
+            color: var(--nav-text);
+            font-size: 26px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .desktop-nav .logo a:hover {
+            transform: translateY(-1px);
+        }
+
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+        }
+
+        .desktop-nav .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 100%;
+        }
+
+        .desktop-nav .nav-links li {
+            list-style: none;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .desktop-nav .nav-links li a {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 12px 18px;
+            border-radius: 8px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            height: 100%;
+        }
+
+        .desktop-nav .nav-links li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .desktop-nav .nav-links li a:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .desktop-nav .nav-links li a:hover::before {
+            width: 80%;
+        }
+
+        /* Desktop Dropdown */
+        .desktop-nav .dropdown-menu {
+            position: absolute;
+            background: var(--nav-bg);
+            width: 220px;
+            top: 100%;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            transform: translateY(-8px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+            padding: 8px 0;
+        }
+
+        .desktop-nav .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .desktop-nav .dropdown-menu li {
+            height: auto;
+            margin: 0;
+        }
+
+        .desktop-nav .dropdown-menu li a {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 400;
+            border-radius: 0;
+            height: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .desktop-nav .dropdown-menu li a::before {
+            display: none;
+        }
+
+        .desktop-nav .dropdown-menu li a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+            padding-left: 25px;
+        }
+
+        /* Dropdown arrow */
+        .desktop-nav .dropdown > a::after {
+            content: '▾';
+            margin-left: 4px;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .desktop-nav .dropdown:hover > a::after {
+            transform: rotate(180deg);
+        }
+
+        /* ========== MOBILE NAVIGATION ========== */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            background: var(--nav-bg);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            animation: slideDown 0.5s ease-out;
+            display: none;
+        }
+
+        .mobile-nav .nav-wrapper {
+            position: relative;
+            max-width: 1200px;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .mobile-nav .logo a {
+            color: var(--nav-text);
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-nav .menu-btn {
+            color: #1f2937;
+            font-size: 24px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .mobile-nav .menu-btn {
+            color: #f8fafc;
+        }
+
+        .mobile-nav .nav-links {
+            position: fixed;
+            height: 100vh;
+            width: 100%;
+            max-width: 350px;
+            top: 0;
+            left: -100%;
+            background: var(--nav-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            box-shadow: 0px 15px 15px rgba(0,0,0,0.18);
+            transition: var(--transition);
+            z-index: 1000;
+            gap: 0;
+        }
+
+        .mobile-nav .nav-links.active {
+            left: 0;
+        }
+
+        .mobile-nav .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #1f2937;
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .mobile-nav .close-btn {
+            color: #f8fafc;
+        }
+
+        .mobile-nav .nav-links li {
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .mobile-nav .nav-links li a {
+            padding: 15px 20px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 8px;
+            color: var(--nav-text);
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .mobile-nav .nav-links li a:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--primary-color);
+        }
+
+        .mobile-nav .dropdown-menu {
+            width: 100%;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 0;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-nav .dropdown-menu.active {
+            max-height: 500px;
+        }
+
+        .mobile-nav .mobile-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .mobile-nav .mobile-dropdown-toggle::after {
+            content: '+';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav .mobile-dropdown-toggle.active::after {
+            transform: rotate(45deg);
+        }
+
+        /* Custom scrollbar for mobile menu */
+        .mobile-nav .nav-links::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .mobile-nav .nav-links::-webkit-scrollbar-track {
+            background: var(--nav-bg);
+        }
+
+        .mobile-nav .nav-links::-webkit-scrollbar-thumb {
+            background: #3A3B3C;
+            border-radius: 4px;
+        }
+
+        /* Floating Theme Toggle */
+        .theme-toggle-floating {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 101;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-floating:hover {
+            background: var(--primary-hover);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Content Styles */
+        h1 {
+            font-size: clamp(24px, 5.5vw, 32px);
+            margin: 100px 0 0.4em;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        h2 {
+            font-size: clamp(20px, 4.5vw, 24px);
+            margin: 1.6em 0 0.5em;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        h3 {
+            font-size: clamp(18px, 4vw, 20px);
+            margin: 1em 0 0.4em;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        p, li {
+            font-size: clamp(15px, 3.8vw, 17px);
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        ol, ul {
+            padding-left: 1.2em;
+            margin: 0.6em 0;
+        }
+
+        a.btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 0.9em 1em;
+            border-radius: 10px;
+            font-weight: 700;
+            line-height: 1.2;
+            white-space: normal;
+            overflow-wrap: break-word;
+            max-width: 520px;
+            margin: 0.6em auto 0;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            animation: pulse 2s infinite;
+        }
+
+        a.btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta {
+            border-radius: 10px;
+            padding: 1.1em 1.2em;
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary-color);
+            margin: 1em 0 1.6em;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .note {
+            background: var(--card-bg);
+            border-left: 4px solid #ca8a04;
+            padding: 0.9em 1em;
+            border-radius: 6px;
+            margin-top: 1em;
+            animation: fadeInUp 0.8s ease-out 1.2s both;
+        }
+
+        header p {
+            margin-top: 0;
+            color: #475569;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        section {
+            margin-bottom: 2em;
+            animation: fadeInUp 0.8s ease-out 1.4s both;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-hover);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 1.6s both;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .footer-logo span {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid #334155;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--footer-text);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(2, 132, 199, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+            }
+        }
+
+        /* ========== RESPONSIVE BREAKPOINTS ========== */
+        @media screen and (max-width: 970px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: block;
+            }
+            
+            h1 {
+                margin: 90px 0 0.4em;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+            
+            .theme-toggle-floating {
+                bottom: 90px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .wrap {
+                padding: 12px;
+            }
+            
+            ol, ul {
+                padding-left: 1em;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+            
+            .theme-toggle-floating {
+                bottom: 75px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navigation (shows only on >970px) -->
+    <nav class="desktop-nav">
+        <div class="nav-wrapper">
+            <div class="logo">
+                <a href="spar.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo" class="logo-img">
+                    <span>Sparwahnsinn</span>
+                </a>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Angebote</a></li>
+                <li class="dropdown">
+                    <a href="#">Mehr Optionen <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Spartipps</a></li>
+                        <li><a href="#">Anleitungen</a></li>
+                        <li><a href="#">Vergleiche</a></li>
+                        <li><a href="#">Kontakt</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Hilfe</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation (shows only on <=970px) -->
+    <nav class="mobile-nav">
+        <div class="nav-wrapper">
+            <div class="logo">
+                <a href="spar.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo" class="logo-img">
+                    <span>Sparwahnsinn</span>
+                </a>
+            </div>
+            
+            <button class="menu-btn"><i class="fas fa-bars"></i></button>
+            
+            <ul class="nav-links">
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Angebote</a></li>
+                <li>
+                    <a href="#" class="mobile-dropdown-toggle">Mehr Optionen</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Spartipps</a></li>
+                        <li><a href="#">Anleitungen</a></li>
+                        <li><a href="#">Vergleiche</a></li>
+                        <li><a href="#">Kontakt</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Hilfe</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-center">
+        <div class="wrap">
+            <header>
+                <h1>Quirion-Deal auf Spartanien: Guthaben sichern und auszahlen lassen</h1>
+                <p>Hol dir die Prämie über Spartanien, löse die Gutscheine bei Quirion ein und zahle dir das Guthaben aufs Girokonto aus.</p>
+            </header>
+
+            <aside class="cta" aria-label="Jetzt starten">
+                <h2 style="margin-top:0;">Dein Bonus wartet</h2>
+                <ul>
+                    <li>Einmalig 25 € einzahlen <em>(geht natürlich auch direkt mit Spartanien-Guthaben, wenn du es in einen Quirion-Gutschein umwandelst)</em></li>
+                    <li>45 € Prämie sichern</li>
+                    <li>Guthaben in Quirion-Gutscheine tauschen</li>
+                    <li>Auf dein Girokonto auszahlen lassen</li>
+                </ul>
+                <a href="https://www.spartanien.de/quirion+Depot?n=sparwahnsinn" target="_blank" rel="nofollow sponsored noopener" class="btn">45 € kassieren</a>
+            </aside>
+
+            <section>
+                <h2>So funktioniert es</h2>
+                <ol>
+                    <li>Registriere dich über Spartanien → <a href="https://www.spartanien.de/quirion+Depot?n=sparwahnsinn" target="_blank" rel="nofollow sponsored noopener">Zum Quirion-Deal</a></li>
+                    <li>Starte dein Depot bei Quirion und zahle den Mindestbetrag ein</li>
+                    <li>Erhalte deine Prämie als Gutschein von Spartanien</li>
+                    <li>Wandle die Gutscheine in Quirion-Guthaben um</li>
+                    <li>Lass dir das Geld auf dein Girokonto überweisen</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Anleitung</h2>
+                <p>Bei den Fragen zu Laufzeit und Risikoprofil kannst du anklicken, was du willst. Das hat hier keine Auswirkungen.</p>
+
+                <h3>Nur die 45 € Prämie mitnehmen</h3>
+                <ul>
+                    <li>Wähle bei der Registrierung <strong>Einmalige Anlage: Manuell</strong></li>
+                    <li>Trage <strong>25 €</strong> ein</li>
+                    <li>Zahle die 25 € einmalig ein <em>(geht natürlich auch mit Spartanien-Guthaben, wenn du es in Quirion-Gutscheine umwandelst)</em></li>
+                    <li>Quirion schreibt dir die 45 € Prämie gut</li>
+                    <li>Die 25 € kannst du dir später wieder auf dein Konto auszahlen lassen</li>
+                </ul>
+
+                <h3>Zusätzliche Prämie mitnehmen</h3>
+                <ul>
+                    <li>Setze bei <strong>Monatlicher Sparbetrag</strong> 50 €, 100 € oder 150 €</li>
+                </ul>
+
+                <h3>Sicherheit und Risiko</h3>
+                <ul>
+                    <li>Setze den Aktienanteil auf <strong>0 %</strong>, wenn du keine Schwankungen willst</li>
+                    <li>Bei einer Aktien-Quote größer als 0 % kann dein Geld steigen oder fallen</li>
+                </ul>
+
+                <div class="note">
+                    <strong>Wichtige Info:</strong> Du kannst bei Quirion pro Jahr maximal <strong>250 €</strong> in Gutscheinen einzahlen. Nimmst du regelmäßig Spartanien-Deals mit, füllst du dieses Limit jedes Jahr und kannst dir die 250 € komplett aufs Girokonto auszahlen lassen.
+                </div>
+            </section>
+
+            <section>
+                <h2>Guthaben auszahlen – so geht's</h2>
+                <p>Du überweist dir dein Depot-/Verrechnungsguthaben auf dein <strong>Referenzkonto (dein Girokonto)</strong>. So machst du das:</p>
+
+                <h3>Am Desktop</h3>
+                <ol>
+                    <li>Bei Quirion einloggen.</li>
+                    <li>Menü öffnen → <strong>Ein- &amp; Auszahlungen</strong> (oder <strong>Auszahlung</strong>).</li>
+                    <li><strong>Betrag</strong> eingeben und <strong>Referenzkonto</strong> prüfen.</li>
+                    <li>Auszahlung bestätigen (TAN/Bestätigung je nach Verfahren).</li>
+                </ol>
+
+                <h3>In der App</h3>
+                <ol>
+                    <li>App öffnen und anmelden.</li>
+                    <li>Tab <strong>Ein-/Auszahlen</strong> wählen.</li>
+                    <li><strong>Auszahlung</strong> tippen, Betrag eingeben, Referenzkonto prüfen.</li>
+                    <li>Bestätigen.</li>
+                </ol>
+
+                <div class="note">
+                    <ul>
+                        <li><strong>Dauer:</strong> Meist 1–2 Bankarbeitstage, sobald das Geld auf dem Verrechnungskonto liegt.</li>
+                        <li><strong>Wenn du >0&nbsp;% Aktien gewählt hast:</strong> Für eine Auszahlung müssen ggf. Anteile verkauft werden (das dauert je nach Fonds/ETF ein paar Banktage).</li>
+                        <li><strong>Bei 0&nbsp;% Aktien:</strong> Das Geld liegt ohne Kursrisiko; Auszahlungen gehen in der Regel schneller durch.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>Was passiert jetzt?</h2>
+                <ul>
+                    <li>Du zahlst 25 € ein</li>
+                    <li>Du bekommst deine 25 € später wieder zurück (plus ein paar Cent Zinsen)</li>
+                    <li>Zusätzlich erhältst du 45 € von Spartanien</li>
+                </ul>
+                <p><strong>Dein sicherer Gewinn: mindestens 45 €.</strong> Mehr Risiko gibt es nicht.</p>
+            </section>
+
+            <section>
+                <h2>Kann etwas schiefgehen?</h2>
+                <p>Quirion zählt seit Jahren zu den seriösen Anbietern. Beachte zwei Punkte:</p>
+                <ul>
+                    <li><strong>Aktiendepot</strong>: Wählst du mehr als 0 % Aktien, schwankt dein Anlagewert.</li>
+                    <li><strong>Unsicher bei Aktien</strong>: Bleib bei 0 % Aktienanteil für stabile Werte.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Teilnahmebedingungen</h2>
+                <ul>
+                    <li>Eröffne das Depot als <strong>Neukunde</strong>. Du darfst aktuell kein Quirion-Kunde sein.</li>
+                    <li>Erhalte <strong>45 €</strong> von Spartanien nach dem ersten Geldeingang ab <strong>25 €</strong> (Sparplan, Gutschein-Einlösung oder Einmalzahlung).</li>
+                    <li><strong>Optional</strong>: Aktionscode <strong>Rente100</strong>. Bei einem 12-monatigen Sparplan ab 25 € erhältst du zusätzlich <strong>100 € Bonus</strong> auf dein Quirion-Depot.</li>
+                    <li><strong>Kinderkonten</strong> sind ausgeschlossen.</li>
+                    <li><strong>Tipp</strong>: Tausche dein Spartanien-Prämienguthaben in Quirion-Gutscheine.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Warum lohnt sich das</h2>
+                <ul>
+                    <li>Neukundenprämie sichern</li>
+                    <li>Zusätzliche Gutscheine über Spartanien mitnehmen</li>
+                    <li>Guthaben flexibel aufs Girokonto auszahlen lassen</li>
+                </ul>
+            </section>
+
+            <section>
+                <a href="https://www.spartanien.de/quirion+Depot?n=sparwahnsinn" target="_blank" rel="nofollow sponsored noopener" class="btn">45 € kassieren</a>
+                <p style="margin-top:.6em; font-size:.9em; color: var(--p-text);">Hinweis: Bedingungen können sich ändern. Link enthält Werbung / Affiliate-Link.</p>
+            </section>
+
+            <footer>
+                <div class="footer-container">
+                    <div class="footer-logo">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo">
+                        <span>Sparwahnsinn</span>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#" target="_blank" rel="noopener noreferrer">Impressum</a>
+                        <a href="#" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+                        <a href="#">Kontakt</a>
+                        <a href="#">Über uns</a>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2023 Sparwahnsinn. Alle Rechte vorbehalten.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Floating Theme Toggle Button -->
+    <button class="theme-toggle-floating" id="theme-toggle-floating">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Navigation Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.querySelector('.mobile-nav .menu-btn');
+            const closeBtn = document.querySelector('.mobile-nav .close-btn');
+            const navLinks = document.querySelector('.mobile-nav .nav-links');
+            const dropdownToggles = document.querySelectorAll('.mobile-nav .mobile-dropdown-toggle');
+            const backToTop = document.querySelector('.back-to-top');
+            const themeToggle = document.querySelector('.theme-toggle-floating');
+            
+            // Mobile menu toggle
+            if (menuBtn && closeBtn && navLinks) {
+                menuBtn.addEventListener('click', () => {
+                    navLinks.classList.add('active');
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            }
+            
+            // Mobile dropdown toggles
+            if (dropdownToggles) {
+                dropdownToggles.forEach(toggle => {
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const dropdown = toggle.nextElementSibling;
+                        if (dropdown) {
+                            dropdown.classList.toggle('active');
+                            toggle.classList.toggle('active');
+                        }
+                    });
+                });
+            }
+            
+            // Back to top button
+            if (backToTop) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTop.classList.add('show');
+                    } else {
+                        backToTop.classList.remove('show');
+                    }
+                });
+                
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Theme toggle
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const icon = themeToggle.querySelector('i');
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    }
+                });
+                
+                // Check for saved theme preference
+                const currentTheme = localStorage.getItem('theme');
+                if (currentTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    const icon = themeToggle.querySelector('i');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navLinks && !e.target.closest('.mobile-nav .nav-links') && !e.target.closest('.mobile-nav .menu-btn')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+            
+            // Animation on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for animation
+            document.querySelectorAll('section, .cta, .note').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
